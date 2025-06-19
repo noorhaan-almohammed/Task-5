@@ -224,7 +224,7 @@ const Products = () => {
         </div>
       ) : (
         <>
-          <Container fluid className="pt-4 ps-7 pe-7 minh-100">
+          <Container fluid className="pt-4  minh-100">
             <div className="w-100 d-flex align-items-center justify-content-sm-center justify-content-start">
               <div className="border rounded-2 p-2 w-70 d-flex align-items-center justify-content-center">
                 <Form.Control

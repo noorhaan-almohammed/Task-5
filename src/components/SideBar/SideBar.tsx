@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useAuthContext } from "../../context/AuthContext";
 import "./SideBar.css";
-
+import "../../css/global.css"
 const SideBar = () => {
   const { user } = useAuthContext();
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const [activeLink, setActiveLink] = useState("products"); // الافتراضي
-
+  const [activeLink, setActiveLink] = useState("products"); 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);

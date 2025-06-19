@@ -62,7 +62,6 @@ function Login() {
                 type="email"
                 placeholder="Enter your email"
                 ref={emailRef}
-                // required
               />
               {errors.email && (
                 <Alert variant="danger" className="mt-2">
@@ -78,7 +77,6 @@ function Login() {
                 type="password"
                 placeholder="Enter your password"
                 ref={passwordRef}
-                // required
               />
               {errors.password && (
                 <Alert variant="danger" className="mt-2">
