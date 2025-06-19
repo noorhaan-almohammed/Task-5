@@ -1,38 +1,40 @@
 import { useCallback } from "react";
 import { AuthRepository } from "../repositories/AuthRepository";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
+
 const authRepo = new AuthRepository();
 
 export function useAuth() {
-  const register = useCallback(authRepo.register.bind(authRepo), []);
-  const login = useCallback(authRepo.login.bind(authRepo), []);
-  const logout = useCallback(authRepo.logout.bind(authRepo), []);
-  const getToken = useCallback(authRepo.getToken.bind(authRepo), []);
-  const refreshToken = useCallback(authRepo.refreshToken.bind(authRepo), []);
-  
-  const navigate = useNavigate();
-   useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        console.log("⏳ Attempting to refresh token...");
-        await authRepo.refreshToken();
-        console.log("✅ Token refreshed successfully");
-      } catch (err) {
-        console.error("❌ Failed to refresh token, logging out");
-        authRepo.logout();
-        navigate("/") 
-      }
-    }, 50*60*1000); //50 minut
+  const { setUser } = useAuthContext();
 
-    return () => clearInterval(interval); 
-  }, []);
+  const register = useCallback(
+    async (data: any) => {
+      const user = await authRepo.register(data);
+      setUser(user);
+      return user;
+    },
+    [setUser]
+  );
+
+  const login = useCallback(
+    async (data: any) => {
+      const user = await authRepo.login(data);
+      setUser(user);
+      return user;
+    },
+    [setUser]
+  );
+
+  const logout = useCallback(() => {
+    setUser(null);
+    authRepo.logout();
+  }, [setUser]);
+  const getToken = useCallback(authRepo.getToken.bind(authRepo), []);
 
   return {
     register,
     login,
     logout,
     getToken,
-    refreshToken,
   };
 }

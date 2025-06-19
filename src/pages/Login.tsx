@@ -31,7 +31,7 @@ function Login() {
         email: emailRef.current!.value,
         password: passwordRef.current!.value,
       });
-      navigate("/home");
+      navigate("/dashboard");
       console.log("Login:", response); // response will be user
     } catch (error: any) {
       console.error("Error:", error);
@@ -62,7 +62,7 @@ function Login() {
                 type="email"
                 placeholder="Enter your email"
                 ref={emailRef}
-                required
+                // required
               />
               {errors.email && (
                 <Alert variant="danger" className="mt-2">
@@ -78,7 +78,7 @@ function Login() {
                 type="password"
                 placeholder="Enter your password"
                 ref={passwordRef}
-                required
+                // required
               />
               {errors.password && (
                 <Alert variant="danger" className="mt-2">

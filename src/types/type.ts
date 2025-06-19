@@ -1,31 +1,57 @@
 export interface RegisterPayload {
-  name: string;
+  first_name: string;
+  last_name: string;
+  user_name: string;
   email: string;
   password: string;
-  img_profile_url: File;
+  password_confirmation: string;
+  profile_image?: File;
 }
 
 export interface User {
   id: number;
-  name: string;
+  first_name: string;
+  last_name: string;
+  user_name: string;
   email: string;
-  img_profile_url: string;
+  profile_image_url: string;
 }
 
 export interface AuthResponse {
   user: User;
-  refresh_token: string;
   token: string;
 }
-export type task = {
+export interface Product {
   id: number;
-  status_id: number,
-  owner_id: number,
-  title: string;
-  description: string;
-  status: string;
-  owner: string;
-  due_date: string;
+  name: string;
+  image_url: string;
+  price: number;
   created_at: string;
   updated_at: string;
+}
+export interface ProductUpdatePayload {
+  name: string ;
+  image?: File ;
+  price: string;
+}
+export interface ProductPayload {
+  name: string;
+  image: File;
+  price: string;
+}
+
+export type ProductFormProps = {
+  initialValues?: {
+    name: string;
+    price: string;
+    imageUrl?: string; 
+  };
+  errors: { [key: string]: string[] };
+  isSubmitting: boolean;
+  onSubmit: (form: {
+    name: string;
+    price: string;
+    image?: File;
+  }) => void;
+  submitLabel?: string;
 };

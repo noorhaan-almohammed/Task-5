@@ -1,15 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Auth from './pages/Auth.tsx';
-import Login from './pages/Login.tsx';
-import Register from './pages/Register.tsx';
+import Auth from "./pages/Auth.tsx";
+import Login from "./pages/Login.tsx";
+import Register from "./pages/Register.tsx";
 import "./lib/axios-interceptor";
-import Home from './pages/Home.tsx';
-import Items from './pages/Items.tsx';
-import IndexItems from './pages/IndexItems.tsx';
+import Dashboard from "./pages/Dashboard.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { AuthProvider } from "./context/AuthContext.tsx";
+import Products from "./components/Products/Products.tsx";
+import ShowProduct from "./pages/ShowProduct.tsx";
+import AddProduct from "./pages/AddProduct.tsx";
+import EditProduct from "./pages/EditeProduct.tsx";
 
 const routers = createBrowserRouter([
   {
@@ -20,18 +23,33 @@ const routers = createBrowserRouter([
       { path: "signup", element: <Register /> },
     ],
   },
-  {path: "/home",
-   element:<Home />,
-   children: [
-    {path: "", element: <Items/> ,children:[
-      {path: "", element: <IndexItems />}
-    ]}
-   ]
-  }
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "",
+        element: <Products />,
+      },
+      {
+        path: "product/:id",
+        element: <ShowProduct />,
+      },
+       {
+        path: "addproduct",
+        element: <AddProduct />,
+      },
+       {
+        path: "editproduct/:id",
+        element: <EditProduct />,
+      },
+    ],
+  },
 ]);
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <AuthProvider>
       <RouterProvider router={routers} />
+    </AuthProvider>
   </StrictMode>
 );
-

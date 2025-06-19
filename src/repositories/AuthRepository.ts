@@ -4,18 +4,22 @@ import type { RegisterPayload, User } from "../types/type";
 export class AuthRepository {
   async register(payload: RegisterPayload): Promise<User> {
     const formData = new FormData();
-    formData.append("name", payload.name);
+    formData.append("first_name", payload.first_name);
+    formData.append("last_name", payload.last_name);
+    formData.append("user_name", payload.user_name);
     formData.append("email", payload.email);
     formData.append("password", payload.password);
-    formData.append("img_profile_url",  payload.img_profile_url);
+    formData.append("password_confirmation", payload.password_confirmation);
+    if (payload.profile_image) {
+      formData.append("profile_image", payload.profile_image);
+    }
 
     const response = await api.post("/register", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    const { token, refresh_token, user } = response.data;
-
+    const { token, user } = response.data;
     localStorage.setItem("token", token);
-    localStorage.setItem("refresh_token", refresh_token);
+    localStorage.setItem("user",JSON.stringify({...user}))
 
     return user;
   }
@@ -29,31 +33,17 @@ export class AuthRepository {
   }): Promise<User> {
     const response = await api.post("/login", { email, password });
 
-    const { token, refresh_token, user } = response.data;
+    const { token, user } = response.data;
 
     localStorage.setItem("token", token);
-    localStorage.setItem("refresh_token", refresh_token);
+    localStorage.setItem("user",JSON.stringify({...user}))
 
     return user;
   }
 
-  async refreshToken() {
-    try {
-      const response = await api.post("/refresh");
-
-      console.log("refresh response", response.data);
-
-      const newToken = response.data.Token;
-      localStorage.setItem("token", newToken);
-    } catch (err) {
-      console.error("refreshToken() failed", err);
-      throw err;
-    }
-  }
-
   logout(): void {
     localStorage.removeItem("token");
-    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
     window.location.href = "/";
   }
 
